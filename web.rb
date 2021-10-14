@@ -240,32 +240,19 @@ get '/accounts/?' do
   result = select_accounts()
 
   base_url = request.base_url
-
-  status 200
-  {
-    links: {
-      self: base_url.chomp('/') + '/accounts'
-    },
-    data: result.map do |res|
-      {
-        type: 'accounts',
-        id: res[:account_uuid],
-        attributes: {
-          provider: res[:account_provider]
-        },
-        relationships: {
-          user: {
-            links: {
-                related: base_url.chomp('/') + '/accounts/' + res[:account_uuid] + '/user'
+  groups = result.map do |res| 
+     {
+            attributes: {
+              name: res[:group_name]
             },
-            data: {
-              id: res[:user_uuid],
-              type: 'users'
-            }
-          }
-        },
-        included: [
-          {
+            type: 'groups',
+            id: res[:group_uuid],
+            relationships: {}
+     }
+    end
+  persons = result.map do |res|
+         
+            {
             attributes: {
               'family-name': res[:user_familyame],
               'first-name': res[:user_firstname]
@@ -288,19 +275,36 @@ get '/accounts/?' do
                 }
               }
             }
-          }, 
-          {
-            attributes: {
-              name: res[:group_name]
+          } 
+        end
+  data = result.map do |res|
+      {
+        type: 'accounts',
+        id: res[:account_uuid],
+        attributes: {
+          provider: res[:account_provider]
+        },
+        relationships: {
+          user: {
+            links: {
+                related: base_url.chomp('/') + '/accounts/' + res[:account_uuid] + '/user'
             },
-            type: 'groups',
-            id: res[:group_uuid],
-            relationships: {}
+            data: {
+              id: res[:user_uuid],
+              type: 'users'
+            }
           }
-        ]
+        }
       }
     end
-  }.to_json
+  status 200
+  {
+    links: {
+      self: base_url.chomp('/') + '/accounts'
+    },
+    data: data,
+   included: groups + persons
+        }.to_json
 end
 
 ###
