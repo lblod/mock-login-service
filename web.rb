@@ -225,6 +225,85 @@ end
 
 
 ###
+# GET /accounts
+#
+# Returns 200 with list of mock accounts
+#        
+###
+get '/accounts/?' do
+  content_type 'application/vnd.api+json'
+
+  ###
+  # Get accounts
+  ###
+
+  result = select_accounts()
+
+  base_url = request.base_url
+
+  status 200
+  {
+    links: {
+      self: base_url.chomp('/') + '/accounts'
+    },
+    data: result.map do |res|
+      {
+        type: 'accounts',
+        id: res[:account_uuid],
+        attributes: {
+          provider: res[:account_provider]
+        },
+        relationships: {
+          user: {
+            links: {
+                related: base_url.chomp('/') + '/accounts/' + res[:account_uuid] + '/user'
+            },
+            data: {
+              id: res[:user_uuid],
+              type: 'users'
+            }
+          }
+        },
+        included: [
+          {
+            attributes: {
+              'family-name': res[:user_familyame],
+              'first-name': res[:user_firstname]
+            },
+            id: res[:user_uuid],
+            type: 'users',
+            relationships: {
+              accounts: {
+                related: base_url.chomp('/') + '/users/' + res[:user_uuid] + '/accounts'
+              },
+              groups: {
+                data: [
+                  {
+                    type: 'groups',
+                    id: res[:group_uuid]
+                  }
+                ],
+                links: {
+                  related: base_url.chomp('/') + '/users/' + res[:user_uuid] + '/groups'
+                }
+              }
+            }
+          }, 
+          {
+            attributes: {
+              name: res[:group_name]
+            },
+            type: 'groups',
+            id: res[:group_uuid],
+            relationships: {}
+          }
+        ]
+      }
+    end
+  }.to_json
+end
+
+###
 # Helpers
 ###
 

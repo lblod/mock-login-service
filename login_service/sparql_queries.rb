@@ -54,6 +54,29 @@ module LoginService
       query(query)
     end
 
+    def select_accounts()
+      query =  " PREFIX foaf: <http://xmlns.com/foaf/0.1/>"
+      query += " PREFIX skos: <http://www.w3.org/2004/02/skos/core#>"
+      query += " PREFIX dcterms: <http://purl.org/dc/terms/>"
+      query += " SELECT ?group_uuid ?account_uuid ?account_identifier ?account_provider ?user_firstname ?user_familyame ?user_uuid ?group_name"
+      query += "  WHERE {"
+      query += "   GRAPH <#{graph}> {"
+      query += "     ?group a <#{BESLUIT.Bestuurseenheid}> ;"
+      query += "      skos:prefLabel ?group_name ;"
+      query += "            <#{MU_CORE.uuid}> ?group_uuid ."
+      query += "     ?account a <#{RDF::Vocab::FOAF.OnlineAccount}> ;"
+      query += "                foaf:accountServiceHomepage ?account_provider;"
+      query += "                <#{MU_CORE.uuid}> ?account_uuid ."
+      query += "     ?person  foaf:account  ?account;"
+      query += "                foaf:firstName ?user_firstname;"
+      query += "                foaf:member ?group;"
+      query += "                foaf:familyName ?user_familyame;"
+      query += "                <#{MU_CORE.uuid}> ?user_uuid ."
+      query += "   }"
+      query += " } GROUP BY ?account_uuid ?group_uuid ?user_uuid"
+      query(query)
+    end
+    
     def select_current_session(account)
       query =  " SELECT ?uri WHERE {"
       query += "   GRAPH <http://mu.semte.ch/graphs/sessions> {"
