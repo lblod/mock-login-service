@@ -142,19 +142,18 @@ delete '/sessions/current/?' do
 
 
   ###
-  # Get account
+  # Error out if no account is attached to a session
   ###
 
   result = select_account_by_session(session_uri)
   error('Invalid session') if result.empty?
-  account = result.first[:account].to_s
 
 
   ###
   # Remove session
   ###
 
-  delete_current_session(account)
+  delete_current_session(session_uri)
 
   status 204
   headers['mu-auth-allowed-groups'] = 'CLEAR'
