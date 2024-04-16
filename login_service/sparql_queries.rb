@@ -64,12 +64,11 @@ module LoginService
       query(query)
     end
 
-    def delete_current_session(account)
+    def delete_current_session(session)
       query= %(
         DELETE WHERE {
            GRAPH <http://mu.semte.ch/graphs/sessions> {
-             ?session <#{MU_SESSION.account}> <#{account}>;
-               ?p ?o.
+             <#{session}> ?p ?o .
            }
          })
       update(query)

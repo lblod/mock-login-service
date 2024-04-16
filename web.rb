@@ -84,7 +84,7 @@ post '/sessions/' do
   ###
   # Insert new session
   ###
-  session_id = generate_uuid()
+  session_id = Mu::generate_uuid()
   insert_new_session_for_account(account[:uri].to_s, session_uri, session_id, group[:group].to_s, group_id, roles)
 
   status 201
@@ -142,19 +142,18 @@ delete '/sessions/current/?' do
 
 
   ###
-  # Get account
+  # Error out if no account is attached to a session
   ###
 
   result = select_account_by_session(session_uri)
   error('Invalid session') if result.empty?
-  account = result.first[:account].to_s
 
 
   ###
   # Remove session
   ###
 
-  delete_current_session(account)
+  delete_current_session(session_uri)
 
   status 204
   headers['mu-auth-allowed-groups'] = 'CLEAR'
