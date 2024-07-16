@@ -42,7 +42,7 @@ module LoginService
       query += "                  <#{MU_EXT.sessionGroup}> ?group ."
       query += "   }"
       query += "   GRAPH <#{graph}> {"
-      query += "     ?group a <#{BESLUIT.Bestuurseenheid}> ;"
+      query += "     ?group a <#{ORG.Organization}> ;"
       query += "            <#{MU_CORE.uuid}> ?group_uuid ."
       query += "   }"
       query += "   GRAPH ?g {"
@@ -78,7 +78,7 @@ module LoginService
     def select_account(id)
       query =  " SELECT ?uri WHERE {"
       query += "   GRAPH <#{graph}> {"
-      query += "     ?group a <#{BESLUIT.Bestuurseenheid}> ;"
+      query += "     ?group a <#{ORG.Organization}> ;"
       query += "            <#{MU_CORE.uuid}> ?group_uuid ."
       query += "   }"
       query += "   GRAPH ?g {"
@@ -96,7 +96,7 @@ module LoginService
     def select_group(group_id)
       query =  " SELECT ?group WHERE {"
       query += "   GRAPH <#{graph}> {"
-      query += "      ?group a <#{BESLUIT.Bestuurseenheid}> ;"
+      query += "      ?group a <#{ORG.Organization}> ;"
       query += "               <#{MU_CORE.uuid}> \"#{group_id}\" ."
       query += "   }"
       query += " }"
@@ -107,7 +107,7 @@ module LoginService
     def select_roles(account_id)
       query =  " SELECT ?role WHERE {"
       query += "   GRAPH <#{graph}> {"
-      query += "     ?group a <#{BESLUIT.Bestuurseenheid}> ;"
+      query += "     ?group a <#{ORG.Organization}> ;"
       query += "            <#{MU_CORE.uuid}> ?group_uuid ."
       query += "   }"
       query += "   GRAPH ?g {"
