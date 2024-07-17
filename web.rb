@@ -10,8 +10,13 @@ include AuthExtensions::Sudo
 
 MU_ACCOUNT = RDF::Vocabulary.new(MU.to_uri.to_s + 'account/')
 MU_SESSION = RDF::Vocabulary.new(MU.to_uri.to_s + 'session/')
-BESLUIT =  RDF::Vocabulary.new('http://data.vlaanderen.be/ns/besluit#')
-ORG =  RDF::Vocabulary.new('http://www.w3.org/ns/org#')
+BESLUIT = RDF::Vocabulary.new('http://data.vlaanderen.be/ns/besluit#')
+
+###
+# ENV Variables
+###
+
+GROUP_TYPE = ENV['GROUP_TYPE'] || BESLUIT.Bestuurseenheid
 
 ###
 # POST /sessions
