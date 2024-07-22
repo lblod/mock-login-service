@@ -20,6 +20,14 @@ The host `login` in the forward URL reflects the name of the login service in th
 
 More information how to setup a mu.semte.ch project can be found in [mu-project](https://github.com/mu-semtech/mu-project).
 
+## Environment Variables
+This project uses the following environment variables:
+
+| Variable    | Description                                                                                      | Default Value                                                | Required |
+|-------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------|----------|
+| GROUP_TYPE  | Used as the `rdf:type` of the group related to the account that is logging in.                   | `http://data.vlaanderen.be/ns/besluit#Bestuurseenheid`       | No       |
+
+
 
 ## Available requests
 
