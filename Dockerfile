@@ -1,4 +1,4 @@
-FROM semtech/mu-ruby-template:2.6.0-ruby2.3
+FROM semtech/mu-ruby-template:3.1.0
 
 MAINTAINER Erika Pauwels <erika.pauwels@gmail.com>
 
