@@ -77,6 +77,7 @@ module LoginService
 
     def select_account(id)
       query =  " SELECT ?uri WHERE {"
+      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
       query += "   GRAPH <#{graph}> {"
       query += "     ?group a <#{GROUP_TYPE}> ;"
       query += "            <#{MU_CORE.uuid}> ?group_uuid ."
@@ -88,8 +89,6 @@ module LoginService
       query += "             <#{RDF::Vocab::FOAF.account}> ?uri ;"
       query += "             <#{RDF::Vocab::FOAF.member}> ?group ."
       query += "   }"
-      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?targetG)"
-      query += "   FILTER(?g = ?targetG)"
       query += " }"
       query(query)
     end
@@ -107,6 +106,7 @@ module LoginService
 
     def select_roles(account_id)
       query =  " SELECT ?role WHERE {"
+      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
       query += "   GRAPH <#{graph}> {"
       query += "     ?group a <#{GROUP_TYPE}> ;"
       query += "            <#{MU_CORE.uuid}> ?group_uuid ."
@@ -119,8 +119,6 @@ module LoginService
       query += "             <#{RDF::Vocab::FOAF.account}> ?uri ;"
       query += "             <#{RDF::Vocab::FOAF.member}> ?group ."
       query += "   }"
-      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?targetG)"
-      query += "   FILTER(?g = ?targetG)"
       query += " }"
       query(query)
     end
