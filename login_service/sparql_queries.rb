@@ -88,7 +88,8 @@ module LoginService
       query += "             <#{RDF::Vocab::FOAF.account}> ?uri ;"
       query += "             <#{RDF::Vocab::FOAF.member}> ?group ."
       query += "   }"
-      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
+      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?targetG)"
+      query += "   FILTER(?g = ?targetG)"
       query += " }"
       query(query)
     end
@@ -118,7 +119,8 @@ module LoginService
       query += "             <#{RDF::Vocab::FOAF.account}> ?uri ;"
       query += "             <#{RDF::Vocab::FOAF.member}> ?group ."
       query += "   }"
-      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
+      query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?targetG)"
+      query += "   FILTER(?g = ?targetG)"
       query += " }"
       query(query)
     end
