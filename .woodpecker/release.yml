@@ -1,10 +1,19 @@
 steps:
-  build-and-release:
-    image: woodpeckerci/plugin-docker-buildx
-    secrets: [ docker_username, docker_password ]
+  release:
+    image: redpencil/plugin-docker-buildx:latest
+    pull: true
     settings:
-      repo: ${CI_REPO}
-      tags: ${CI_COMMIT_TAG##v} # strips v from the tag
+      platforms:
+        - linux/amd64
+        - linux/arm64
+      repo: "${CI_REPO}"
+      tags: "${CI_COMMIT_TAG##v}" # strips v from the tag
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      ssh_key:
+        from_secret: ssh_key
 when:
-  event: tag
-  tag: v*
+  - event: tag
+    ref: refs/tags/v*
