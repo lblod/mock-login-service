@@ -9,7 +9,7 @@ module AuthExtensions
         if ENV['MU_SPARQL_TIMEOUT']
           options[:read_timeout] = ENV['MU_SPARQL_TIMEOUT'].to_i
         end
-        @sparql_client = SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], options)
+        @sparql_client = SPARQL::Client.new(ENV['MU_SPARQL_ENDPOINT'], **options)
       end
       @sparql_client
     end
