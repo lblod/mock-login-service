@@ -1,3 +1,4 @@
+require_relative '../lib/mu/auth-sudo'
 require_relative '/usr/src/app/sinatra_template/utils.rb'
 module LoginService
   module SparqlQueries
@@ -12,7 +13,7 @@ module LoginService
       query += "                  <#{MU_EXT.sessionGroup}> ?group ."
       query += "   }"
       query += " }"
-      update(query)
+      Mu::AuthSudo.update(query)
     end
 
     def insert_new_session_for_account(account, session_uri, session_id, group_uri, group_id, roles)
@@ -30,7 +31,7 @@ module LoginService
       end
       query += "   }"
       query += " }"
-      update(query)
+      Mu::AuthSudo.update(query)
     end
 
     def select_account_by_session(session)
@@ -51,7 +52,7 @@ module LoginService
       query += "   }"
       query += "   FILTER(?g = IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)))"
       query += " } GROUP BY ?session_uuid ?group_uuid ?account_uuid ?account"
-      query(query)
+      Mu::AuthSudo.query(query)
     end
 
     def select_current_session(account)
@@ -61,7 +62,7 @@ module LoginService
       query += "        <#{MU_CORE.uuid}> ?id . "
       query += "   }"
       query += " }"
-      query(query)
+      Mu::AuthSudo.query(query)
     end
 
     def delete_current_session(account)
@@ -72,7 +73,7 @@ module LoginService
                ?p ?o.
            }
          })
-      update(query)
+      Mu::AuthSudo.update(query)
     end
 
     def select_account(id)
@@ -90,7 +91,7 @@ module LoginService
       query += "   }"
       query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
       query += " }"
-      query(query)
+      Mu::AuthSudo.query(query)
     end
 
     def select_group(group_id)
@@ -100,7 +101,7 @@ module LoginService
       query += "               <#{MU_CORE.uuid}> \"#{group_id}\" ."
       query += "   }"
       query += " }"
-      query(query)
+      Mu::AuthSudo.query(query)
     end
 
 
@@ -120,7 +121,7 @@ module LoginService
       query += "   }"
       query += "   BIND(IRI(CONCAT(\"http://mu.semte.ch/graphs/organizations/\", ?group_uuid)) as ?g)"
       query += " }"
-      query(query)
+      Mu::AuthSudo.query(query)
     end
   end
 end
